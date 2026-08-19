@@ -3,6 +3,7 @@ name: Sync with Upstream
 on:
   schedule:
     - cron: '0 */6 * * *'  # 每 6 小时执行一次
+  workflow_dispatch:       # 允许手动触发
 
 jobs:
   sync:
@@ -28,4 +29,4 @@ jobs:
         run: |
           git add .
           git commit -m "Sync with upstream" --allow-empty
-          git push https://${{ secrets.PAT }}@github.com/WORLDGOVERNMENTOFFICE/OpenClaw.git main  # 你的 Fork 仓库 URL
+          git push https://github.com/john_doe/OpenClaw.git main  # 你的 Fork 仓库 URL
