@@ -1,0 +1,30 @@
+name: Sync with Upstream
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # 每 6 小时执行一次
+  workflow_dispatch:       # 允许手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: WORLDGOVERNMENTOFFICE/OpenClaw  # 上游仓库的完整名称
+          token: ${{ secrets.PAT }}
+
+      - name: Setup Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Pull latest changes from upstream
+        run: |
+          git pull upstream main  # 或其他分支名
+
+      - name: Push changes to your fork
+        run: |
+          git push https://john_doe:${{ secrets.GITHUB_TOKEN }}@github.com/john_doe/OpenClaw.git main
