@@ -1,9 +1,7 @@
 name: Sync with Upstream
 
 on:
-  schedule:
-    - cron: '0 */6 * * *'  # 每 6 小时执行一次
-  workflow_dispatch:       # 允许手动触发
+  workflow_dispatch:  # 允许手动触发
 
 jobs:
   sync:
@@ -23,8 +21,12 @@ jobs:
 
       - name: Pull latest changes from upstream
         run: |
-          git pull upstream main  # 或其他分支名
+          git remote add upstream https://github.com/WORLDGOVERNMENTOFFICE/OpenClaw.git
+          git fetch upstream
+          git merge upstream/main
 
-      - name: Push changes to your fork
+      - name: Commit and Push
         run: |
-          git push https://john_doe:${{ secrets.GITHUB_TOKEN }}@github.com/john_doe/OpenClaw.git main
+          git add .
+          git commit -m "Sync with upstream" --allow-empty
+          git push https://john_doe:${{ secrets.PAT }}@github.com/john_doe/OpenClaw.git main
